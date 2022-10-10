@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "cloudinary_ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cloudinary/cloudinary_ios.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e70a1b1309753068c30af6add0baec5f4cff21ac"
+      }
+    },
+    {
+      "identity" : "lottie-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-ios.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e9dbb07d4ce0d41334c89ac4642e5fd5497ceaed"
+      }
+    },
+    {
+      "identity" : "swinject",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Swinject/Swinject.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "ff1e34be3fe5da2129d5b05e150233a1d6cf9300"
+      }
+    }
+  ],
+  "version" : 2
+}
