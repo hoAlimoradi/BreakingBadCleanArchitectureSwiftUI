@@ -11,12 +11,12 @@ struct HomeView: View {
      
     @Namespace var animation
     @EnvironmentObject private var baseData: BaseViewModel
-    @StateObject private var viewModel = HomeViewModel()
+    @StateObject private var viewModel = SharedViewModel()
  
     @State private var showOptions = false
-    @State var txt = ""
+    @State private var searchText = ""
     @State var showingAlert = false
-    
+  
     private var content: some View {
         switch viewModel.state {
         case .idle:
@@ -24,8 +24,7 @@ struct HomeView: View {
             
         case .fetching:
             return AnyView(listView().onAppear{
-                Task {
-                   // await viewModel.getAllCharacters()
+                Task { 
                 }
             })
             
@@ -85,95 +84,90 @@ struct HomeView: View {
         return view
     }
     
+    var searchResults: [Character] {
+           if searchText.isEmpty {
+               return viewModel.characters
+           } else {
+               return viewModel.characters.filter { $0.name.contains(searchText) }
+           }
+       }
+    
     private func listView() -> some View {
-        
-        ScrollView(.vertical, showsIndicators: false) {
-            
-            VStack(spacing: 15) {
-                
-                Navbar()
-                HStack(spacing: 15){
-                    
-                    HStack{
-                        
-                        Image(systemName: "magnifyingglass").font(.body)
-                        
-                        TextField("Search Groceries", text: $txt)
-                        
-                    }.padding(10)
-                    .background(Color("Color1"))
-                    .cornerRadius(20)
-                    
-                    Button(action: {
-                        
-                    }) {
-                        
-                        Image("mic").renderingMode(.original)
+        NavigationView {
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 15) {
+                    Navbar()
+                    HStack(spacing: 15){
+                        HStack{
+                            Image(systemName: "magnifyingglass").font(.body)
+                            TextField("Search Groceries", text: $searchText)
+                        }.padding(10)
+                        .background(Color("Color1"))
+                        .cornerRadius(20)
+                        Button(action: {
+                        }) {
+                            Image("mic").renderingMode(.original)
+                        }
                     }
-                }
-                HStack {
-                    
-                    Text("All Characters")
-                        .font(.title.bold())
-                    
-                    Spacer()
-                    
-                    Button {
-                    } label: {
-                        HStack(spacing: 3) {
-                            Group {
-                                switch viewModel.sortDescriptor {
-                                case .default:
-                                    Text("Sort by")
-                                case .priceAscending:
-                                    Text("Price ascending")
-                                case .priceDescending:
-                                    Text("Price descending")
+                    HStack {
+                        Text("All Characters")
+                            .font(.title.bold())
+                        Spacer()
+                        Button {
+                        } label: {
+                            HStack(spacing: 3) {
+                                Group {
+                                    switch viewModel.sortDescriptor {
+                                    case .default:
+                                        Text("Sort by")
+                                    case .priceAscending:
+                                        Text("Price ascending")
+                                    case .priceDescending:
+                                        Text("Price descending")
+                                    }
                                 }
-                            }
-                            .font(.caption.bold())
-                            
-                            Image(systemName: "chevron.down")
-                                .rotationEffect(.degrees(showOptions ? 180 : 0))
                                 .font(.caption.bold())
-                        }
-                        .foregroundColor(.secondary)
-                    }
-                }
-                .padding(.top, 25)
-                
-                // MARK: - Custom Segment Tab - Character Filters
-                ScrollView(.horizontal, showsIndicators: false) {
-                    
-                    HStack(spacing: 18) {
-                        
-                        // segment button - this will be product filters
-                        ForEach(CharacterType.allCases, id: \.rawValue) { type in
-                            SegmentButton(image: type.image, type: type)
-                        }
-                    }
-                    .padding(.vertical)
-                }
-                
-                // MARK: - Character View
-                let columns = Array(repeating: GridItem(.flexible(), spacing: 15), count: 2)
-                
-                LazyVGrid(columns: columns, spacing: 18) {
-                    
-                    
-                    ForEach(viewModel.characters) { character in
-                        CardView(character: character)
-                            .onTapGesture {
-                                withAnimation {
-                                    baseData.navigate(to: character)
-                                }
+                                Image(systemName: "chevron.down")
+                                    .rotationEffect(.degrees(showOptions ? 180 : 0))
+                                    .font(.caption.bold())
                             }
+                            .foregroundColor(.secondary)
+                        }
+                    }
+                    .padding(.top, 25)
+                    // MARK: - Custom Segment Tab - Character Filters
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 18) {
+                            // segment button - this will be product filters
+                            ForEach(CharacterType.allCases, id: \.rawValue) { type in
+                                SegmentButton(image: type.image, type: type)
+                            }
+                        }
+                        .padding(.vertical)
+                    }
+                    // MARK: - Character View
+                    let columns = Array(repeating: GridItem(.flexible(), spacing: 15), count: 2)
+                    LazyVGrid(columns: columns, spacing: 18) {
+                        ForEach(searchResults) { character in
+                            CardView(character: character)
+                            /*
+                             .onTapGesture {
+                                 withAnimation {
+                                     baseData.navigate(to: character)
+                                 }
+                             }
+                             */
+  
+                        }
                     }
                 }
+                .padding()
+                .padding(.bottom, 100)
             }
-            .padding()
-            .padding(.bottom, 100)
+            //end of scroll
+             
         }
+        
         
     }
 }
@@ -182,8 +176,8 @@ extension HomeView {
    
     @ViewBuilder
     private func CardView(character: Character) -> some View {
-        
-        ZStack{
+         
+        NavigationLink(destination: ProfilePage(character: character)){
              
             VStack(spacing: 15) {
                 Button {
@@ -245,11 +239,11 @@ extension HomeView {
             }
             .padding()
             .background(Color.white, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-            .onTapGesture {
-                
-                self.baseData.showDetail.toggle()
-            }
-            
+//            .onTapGesture {
+//                
+//                self.baseData.showDetail.toggle()
+//            }
+//            
         }
         
     }

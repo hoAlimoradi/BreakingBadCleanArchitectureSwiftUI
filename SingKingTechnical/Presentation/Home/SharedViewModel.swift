@@ -6,21 +6,18 @@
 
 import Foundation
 
-final class HomeViewModel: ObservableObject {
+final class SharedViewModel: ObservableObject {
     
-  @Published private(set) var state = State.idle
-  //@Published private(set) var errorText: String = ""
+  @Published private(set) var state = HomeState.idle
     
   @Published private(set) var characters = [Character]()
    
   @Published var selectedCharacterType: CharacterType = .all
     
   @Published private(set) var sortDescriptor: SortDescriptor = .default
-  
-  //@Published var state: ViewState?
+   
   @Published private(set) var error: NetworkError?
-  
-  //@Inject private var service: Networking
+   
   @Inject private var repository: CharactersRepository
     
   // pagination properties
@@ -69,7 +66,7 @@ final class HomeViewModel: ObservableObject {
   }
 }
 
-private extension HomeViewModel {
+private extension SharedViewModel {
   func reset() {
       characters.removeAll()
       state = .idle
@@ -78,22 +75,20 @@ private extension HomeViewModel {
 }
 
 // MARK: - Convenience Init for testing
-extension HomeViewModel {
+extension SharedViewModel {
   convenience init(repository: CharactersRepository) {
     self.init()
     self._repository.mockWrappedValue(with: repository)
   }
 }
  
-extension HomeViewModel {
-    enum State {
+extension SharedViewModel {
+    enum HomeState {
         case idle
         case fetching
         case loading
         case empty
-        case error
-//        case loaded([ListItem])
-//        case error(Error)
+        case error 
     }
 }
 

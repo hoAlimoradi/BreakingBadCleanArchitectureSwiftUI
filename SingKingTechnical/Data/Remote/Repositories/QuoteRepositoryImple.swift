@@ -1,21 +1,20 @@
 //
-//  CharactersRepository.swift
+//  QuoteRepositoryImple.swift
 //  SingKingTechnical
 //
-//  Created by Hosein Alimoradi on 7/17/1401 AP.
+//  Created by Hosein Alimoradi on 7/20/1401 AP.
 //
 
- 
 import Foundation
 
-final class CharactersRepositoryImple: CharactersRepository {
+final class QuoteRepositoryImple: QuoteRepository {
      
     @Inject private var service: Networking
     
-    func getAllCharacters() async throws -> CharacterResultsDTO {
+    func getAllQuotes() async throws -> QuoteResultsDTO {
         let response = try await service.request(
-          .characters,
-          type: CharacterResultsDTO.self
+            .quote,
+          type: QuoteResultsDTO.self
         )
         print("response: \(response)")
         return response
@@ -23,11 +22,10 @@ final class CharactersRepositoryImple: CharactersRepository {
   
 }
  
-// MARK: - Convenience Init for testing
-extension CharactersRepositoryImple {
+ 
+extension QuoteRepositoryImple {
   convenience init(service: Networking) {
     self.init()
     self._service.mockWrappedValue(with: service)
   }
 }
-

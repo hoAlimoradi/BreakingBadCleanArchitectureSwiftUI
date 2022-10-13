@@ -10,9 +10,10 @@ import Foundation
 // MARK: - Endpoints
 /// endpoints available for our application in the backend
 enum Endpoint {
-
   case characters
-   
+  case episodes
+  case death
+  case quote
 }
 
 // MARK: - Host and Paths
@@ -25,8 +26,13 @@ extension Endpoint {
     switch self {
     case .characters:
       return "/api/characters"
-   
-    }
+    case .episodes:
+      return "/api/episodes"
+    case .death:
+      return "/api/deaths"
+    case .quote:
+      return "/api/quotes"
+    } 
   }
 }
 
@@ -41,7 +47,10 @@ extension Endpoint {
   
   var methodType: MethodType {
     switch self {
-    case .characters:
+    case .characters,
+            .episodes,
+            .death,
+            .quote :
       return .GET
     }
   }

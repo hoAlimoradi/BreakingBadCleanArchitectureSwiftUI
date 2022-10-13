@@ -1,5 +1,5 @@
 //
-//  ProfileView.swift
+//  AboutView.swift
 //  SingKingTechnical
 //
 //  Created by Hosein Alimoradi.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ProfileView : View {
+struct AboutView : View {
     
      
     @State var top = UIApplication.shared.windows.last?.safeAreaInsets.top
@@ -21,7 +21,7 @@ struct ProfileView : View {
             Image("breakingbadImage")
                 
                 .resizable()
-                .frame(height: UIScreen.main.bounds.height / 2)
+                .frame(height: UIScreen.main.bounds.width * (3/4))
                 .edgesIgnoringSafeArea(.top)
                 .overlay(
             

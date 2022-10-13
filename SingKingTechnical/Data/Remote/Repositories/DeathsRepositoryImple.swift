@@ -1,21 +1,20 @@
 //
-//  CharactersRepository.swift
+//  DeathsRepositoryImple.swift
 //  SingKingTechnical
 //
-//  Created by Hosein Alimoradi on 7/17/1401 AP.
+//  Created by Hosein Alimoradi on 7/20/1401 AP.
 //
 
- 
 import Foundation
 
-final class CharactersRepositoryImple: CharactersRepository {
+final class DeathsRepositoryImple: DeathsRepository {
      
     @Inject private var service: Networking
     
-    func getAllCharacters() async throws -> CharacterResultsDTO {
+    func getAllDeaths() async throws -> DeathsResultsDTO {
         let response = try await service.request(
-          .characters,
-          type: CharacterResultsDTO.self
+          .death,
+          type: DeathsResultsDTO.self
         )
         print("response: \(response)")
         return response
@@ -24,10 +23,9 @@ final class CharactersRepositoryImple: CharactersRepository {
 }
  
 // MARK: - Convenience Init for testing
-extension CharactersRepositoryImple {
+extension DeathsRepositoryImple {
   convenience init(service: Networking) {
     self.init()
     self._service.mockWrappedValue(with: service)
   }
 }
-

@@ -42,7 +42,7 @@ final class NetworkService: Networking {
     }
     
     let decoder = JSONDecoder()
-    
+    print(String(decoding: data, as: UTF8.self))
     do {
       let result = try decoder.decode(T.self, from: data)
       return result

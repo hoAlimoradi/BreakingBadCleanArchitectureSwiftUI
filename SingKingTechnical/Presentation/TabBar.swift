@@ -29,10 +29,10 @@ struct TabBar: View {
       FavouritesView()
         .tag(Tab.heart)
       
-      Text("Clipboard")
+      AllEndPointsView()
         .tag(Tab.clipboard)
       
-      ProfileView()
+      AboutView()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.opacity(0.04))
         .tag(Tab.profile)
